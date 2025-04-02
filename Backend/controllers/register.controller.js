@@ -4,6 +4,7 @@ var User = require('../models/user.model');
 const streamServer = require('../stream');
 
 const handleRegister = async (req, res) => {
+    
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
@@ -74,7 +75,8 @@ const handleRegister = async (req, res) => {
                                 email: newUser.email,
                                 username: newUser.username,
                                 image: newUser.image,
-                                streamToken: streamToken
+                                streamToken: streamToken,
+                                isFirstLogin: true,
                             });
                         })
                         .catch(err => {

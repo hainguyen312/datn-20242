@@ -40,7 +40,8 @@ function Login() {
                 const streamToken = response?.data?.streamToken;
                 const image = response?.data?.image;
                 const id =response?.data?.userId;
-                setAuth({ username, fullname, email, accessToken, streamToken, image, id });
+                const isFirstLogin = response?.data?.isFirstLogin;
+                setAuth({ username, fullname, email, accessToken, streamToken, image, id, isFirstLogin });
                 navigate('/', { replace: true });
             } catch (error) {
                 console.log(error);
@@ -74,7 +75,8 @@ function Login() {
             const streamToken = response?.data?.streamToken;
             const image = response?.data?.image;
             const id =response.data.userId;
-            setAuth({ username, fullname, email, accessToken, streamToken, image ,id });
+            const isFirstLogin = response?.data?.isFirstLogin;
+            setAuth({ username, fullname, email, accessToken, streamToken, image, id, isFirstLogin });
             setIdentifier('');
             setPassword('');
             setHasError(false);

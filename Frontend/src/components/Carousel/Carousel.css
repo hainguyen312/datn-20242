@@ -21,10 +21,11 @@
     flex-shrink: 0;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: space-around;
     border: 1px solid #555;
     border-radius: calc(var(--outer-r) - var(--p-distance));
-    background-color: #0D0D0D;
+    background-color: rgb(59 130 246);
+    min-height: 238px;
     overflow: hidden;
     cursor: grab;
   }
@@ -69,15 +70,15 @@
   }
   
   .carousel-item-header {
-    margin-bottom: 16px;
+    margin-top: 16px;
     padding: 20px;
     padding-top: 20px;
   }
   
   .carousel-icon-container {
     display: flex;
-    height: 28px;
-    width: 28px;
+    height: 42px;
+    width: 42px;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
@@ -85,8 +86,8 @@
   }
   
   .carousel-icon {
-    height: 16px;
-    width: 16px;
+    height: 24px;
+    width: 24px;
     color: #060606;
   }
   
@@ -131,7 +132,7 @@
   }
   
   .carousel-indicator.active {
-    background-color: #fff;
+    background-color: rgb(59 130 246);
   }
   
   .carousel-indicator.inactive {

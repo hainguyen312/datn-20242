@@ -76,6 +76,7 @@ const handleLogin = async (req, res) => {
                     email: existingUser.email,
                     username: existingUser.username,
                     image: existingUser.image || `https://getstream.io/random_png/?name=${existingUser.username}`,
+                    isFirstLogin: existingUser.isFirstLogin,
                     streamToken: streamToken
                 });
             }

@@ -98,13 +98,14 @@ function Register() {
             const response = await axios.post('/api/register', { username, password, email });
             const accessToken = response?.data?.accessToken;
             const streamToken = response?.data?.streamToken;
+            const isFirstLogin = response?.data?.isFirstLogin;
             const image = response?.data?.image;
             setUsername('');
             setEmail('');
             setPassword('');
             setCfPassword('');
             setHasError(false);
-            setTmpAuth({ username: username, email, accessToken, streamToken, image })
+            setTmpAuth({ username: username, email, accessToken, streamToken, image, isFirstLogin })
             setSuccess(true);
         } catch (error) {
             setHasError(true);

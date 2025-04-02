@@ -31,6 +31,7 @@ const handleRefreshToken = async (req, res) => {
             const fullname = existingUser.fullname;
             const email = existingUser.email;
             const image = existingUser.image || `https://getstream.io/random_png/?name=${username}`;
+            const isFirstLogin = existingUser.isFirstLogin;
 
             const newAccessToken = JWT.sign(
                 {
@@ -49,7 +50,7 @@ const handleRefreshToken = async (req, res) => {
             const streamToken = await streamServer.createToken(username);
 
             return res.status(200).json({
-                username, userId, fullname, email, accessToken: newAccessToken, streamToken, image
+                username, userId, fullname, email, accessToken: newAccessToken, streamToken, image, isFirstLogin
             });
         }
     );

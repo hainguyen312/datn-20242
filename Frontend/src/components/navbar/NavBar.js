@@ -5,17 +5,24 @@ import Tippy from "@tippyjs/react";
 import 'tippy.js/dist/tippy.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-
+import useAuth from "../../hooks/useAuth";
 import useLogout from "../../hooks/useLogout";
-
+import HomeTour from "../HomeTour";
 const navItems = [
   { path: "/", title: "Chats", icon: BsChat },
   { path: "/profile", title: "Profile", icon: BsPerson },
   { path: "/groups", title: "Groups", icon: BsPeople },
   { path: "/settings", title: "Settings", icon: BsGear }
 ];
+const buttonClasses = {
+  "Chats": "chats-button",
+  "Profile": "profile-button",
+  "Groups": "groups-button",
+  "Settings": "settings-button"
+};
 
 const NavBar = () => {
+  const { auth, setAuth } = useAuth();
   const location = useLocation();
   const logout = useLogout();
 
@@ -50,9 +57,14 @@ const NavBar = () => {
       </h1>
       <div className="divider my-0"></div>
       <div className="flex flex-col gap-1 justify-between items-center w-full mt-9">
+        <HomeTour 
+          isFirstLogin={auth.isFirstLogin} 
+          onTourComplete={() => {
+          }} 
+        />
         {navItems.map((item, index) => (
           <Tippy key={index} content={item.title} placement="right">
-            <div className={`rounded-[50%] w-[70px] h-[70px] flex items-center justify-center 
+            <div className={`rounded-[50%] w-[70px] h-[70px] flex items-center justify-center ${buttonClasses[item.title]}
             ${isActive(item.path) ? 'bg-[var(--active-tab-bg)]' : 'hover:bg-[var(--tab-hover-bg)]'}`}>
               <Link to={item.path} className="w-full flex justify-center py-4">
                 <span className="p-2 flex flex-row">

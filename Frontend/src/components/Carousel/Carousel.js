@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 // replace icons with your own if needed
-import { FiCircle, FiCode, FiFileText, FiLayers, FiLayout } from "react-icons/fi";
+import { FiUserCheck, FiCheckCircle, FiFolderPlus, FiUsers} from "react-icons/fi";
 
 import "./Carousel.css";
 
@@ -10,31 +10,25 @@ const DEFAULT_ITEMS = [
     title: "Bước 1: Thông tin cơ bản",
     description: "Nhập tên nhóm và tải lên ảnh đại diện cho nhóm của bạn",
     id: 1,
-    icon: <FiFileText className="carousel-icon" />,
+    icon: <FiFolderPlus className="carousel-icon" />,
   },
   {
-    title: "Bước 2: Thêm thành viên",
-    description: "Nhập username để thêm thành viên vào nhóm",
+    title: "Bước 2: Thêm và quản lý thành viên",
+    description: "Nhập username để thêm thành viên vào nhóm và quản lý thành viên đã thêm",
     id: 2,
-    icon: <FiCircle className="carousel-icon" />,
+    icon: <FiUsers className="carousel-icon" />,
   },
   {
-    title: "Bước 3: Quản lý thành viên",
-    description: "Xem và quản lý danh sách thành viên đã thêm",
+    title: "Bước 3: Tạo nhóm",
+    description: "Kiểm tra thông tin nhóm",
     id: 3,
-    icon: <FiLayers className="carousel-icon" />,
+    icon: <FiUserCheck className="carousel-icon" />,
   },
   {
-    title: "Bước 4: Tạo nhóm",
-    description: "Kiểm tra thông tin và nhấn nút tạo nhóm để hoàn tất",
+    title: "Bước 4: Hoàn thành",
+    description: "Nhấn nút Xác nhận để hoàn tất",
     id: 4,
-    icon: <FiLayout className="carousel-icon" />,
-  },
-  {
-    title: "Bước 5: Hoàn thành",
-    description: "Nhóm của bạn đã được tạo thành công!",
-    id: 5,
-    icon: <FiCode className="carousel-icon" />,
+    icon: <FiCheckCircle className="carousel-icon" />,
   },
 ];
 

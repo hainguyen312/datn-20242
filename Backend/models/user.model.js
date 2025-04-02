@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     refreshToken: String,
+    isFirstLogin: {
+        type: Boolean,
+        default: true
+    }
 })
 
 module.exports = mongoose.model('User', userSchema)

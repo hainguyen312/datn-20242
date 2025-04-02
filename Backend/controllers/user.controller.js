@@ -120,4 +120,21 @@ const handleChangePassword = async (req, res) => {
     }
 }
 
-module.exports = { handleEditInfo, handleChangePassword }
+const handleUpdateFirstLogin = async (req, res) => {
+    console.log(`${req.username} updating first login status`);
+    try {
+        const user = await User.findById(req.userId);
+        if (user) {
+            user.isFirstLogin = false;
+            await user.save();
+            return res.status(200).json({ message: 'First login status updated successfully' });
+        } else {
+            return res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+module.exports = { handleEditInfo, handleChangePassword, handleUpdateFirstLogin }

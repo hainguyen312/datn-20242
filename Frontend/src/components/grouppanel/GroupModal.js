@@ -137,84 +137,83 @@ function GroupModal({ toggleModal, status, editGroup, onCreateGroup, onEditGroup
         switch (currentStep) {
             case 0:
                 return (
-                    <div className="h-[90px] m-4 bg-[var(--page-bg)] flex items-center justify-center">
-                        <FaImages size={64} color=""
-                            style={groupAvatar ? { display: "none" } : { color: "rgb(59 130 246 / var(--tw-bg-opacity))" }} />
-                        {groupAvatar && (
-                            <img src={groupAvatar.preview} alt="" className="w-16 h-16 rounded-full object-cover" />
-                        )}
-                        <div className="pl-5">
-                            <label
-                                htmlFor="inputAvatar"
-                                className="cursor-pointer rounded border mr-[40px] px-[12px] py-[6px] bg-white text-black hover:border-gray-500">
-                                Group Image
-                            </label>
+                    <div className="flex flex-col">
+                        <div className="h-[90px] m-4 bg-[var(--page-bg)] flex items-center justify-center">
+                            <FaImages size={64} color=""
+                                style={groupAvatar ? { display: "none" } : { color: "rgb(59 130 246 / var(--tw-bg-opacity))" }} />
+                            {groupAvatar && (
+                                <img src={groupAvatar.preview} alt="" className="w-16 h-16 rounded-full object-cover" />
+                            )}
+                            <div className="pl-5">
+                                <label
+                                    htmlFor="inputAvatar"
+                                    className="cursor-pointer rounded border mr-[40px] px-[12px] py-[6px] bg-white text-black hover:border-gray-500">
+                                    Group Image
+                                </label>
+                                <input
+                                    className="hidden"
+                                    name="file"
+                                    type="file"
+                                    id="inputAvatar"
+                                    onChange={handlePreviewAvatar}
+                                ></input>
+                            </div>
+                        </div>
+                        <div className="relative mx-4">
+                            <label htmlFor="groupname" className="absolute px-1 font-semibold bg-[var(--page-bg)] left-3 z-30 text-blue-600 text-xs">Group Name</label>
                             <input
-                                className="hidden"
-                                name="file"
-                                type="file"
-                                id="inputAvatar"
-                                onChange={handlePreviewAvatar}
-                            ></input>
+                                type="text"
+                                id="groupname"
+                                value={groupName}
+                                className="outline-0 absolute top-2 z-20 rounded-sm py-1.5 pl-3 w-full bg-[var(--page-bg)]
+                                text-[var(--login-input-text-color)] border-2 border-gray-300 duration-300 hover:border-cyan-600 focus:border-blue-700"
+                                placeholder="Enter Group Name"
+                                onChange={(e) => setGroupName(e.target.value)} />
                         </div>
                     </div>
                 );
             case 1:
                 return (
-                    <div className="relative mx-4">
-                        <label htmlFor="groupname" className="absolute px-1 font-semibold bg-[var(--page-bg)] left-3 z-30 text-blue-600 text-xs">Group Name</label>
-                        <input
-                            type="text"
-                            id="groupname"
-                            value={groupName}
-                            className="outline-0 absolute top-2 z-20 rounded-sm py-1.5 pl-3 w-full bg-[var(--page-bg)]
-                             text-[var(--login-input-text-color)] border-2 border-gray-300 duration-300 hover:border-cyan-600 focus:border-blue-700"
-                            placeholder="Enter Group Name"
-                            onChange={(e) => setGroupName(e.target.value)} />
+                    <div className="flex flex-col">
+                        <div className="relative mt-8 mx-2">
+                            <label htmlFor="useradd" className="absolute px-1 font-semibold bg-[var(--page-bg)] left-3 z-30 text-blue-600 text-xs">Add User</label>
+                            <input
+                                type="text"
+                                id="useradd"
+                                value={userAdd}
+                                className="outline-0 absolute top-2 z-20 rounded-sm py-1.5 pl-3 w-[326px] bg-[var(--page-bg)] right-16 
+                                 text-[var(--login-input-text-color)] border-2 border-gray-300 duration-300 hover:border-cyan-600 focus:border-blue-700"
+                                placeholder="Enter Username"
+                                onChange={(e) => setUserAdd(e.target.value)} />
+                            <button
+                                type="submit"
+                                onClick={handleAdd}
+                                disabled={!userAdd}
+                                className={`absolute right-[-4px] w-16 h-10 mt-2 ${userAdd === '' ? 'bg-gray-500 hover:bg-gray-600 hover:cursor-not-allowed' : '  bg-blue-500 hover:bg-blue-600'} duration-300 text-white font-semibold rounded-md  `}>
+                                Add
+                            </button>
+                        </div>
+                        <div className={`relative mt-20 mx-4 flex ${list.length === 0 ? 'justify-end ' : 'justify-between'} `}>
+                            <p className="text-blue-600 absolute left-0 top-[-16px]">Members</p>
+                            <div className="flex flex-wrap max-w-[65%] h-auto">
+                                {list.map((user, id) => {
+                                    return <Tippy key={id} content={user.username} placement="bottom">
+                                        <div className="inline-block w-[60px] mr-[5px] relative mt-4">
+                                            <div className="w-full flex justify-center">
+                                                <img className="w-10 h-10 rounded-full object-cover" src={user.image} alt="" />
+                                                <button onClick={() => removeUser(user._id)} className="top-0 left-10 rounded-full bg-red-600 font-bold text-[10px] text-white absolute w-3.5 h-3.5"> X </button>
+                                            </div>
+                                            <p className="font-medium text-center text-[var(--login-input-text-color)]
+                                             text-[14px] truncate max-w-[60px]">{user.username}</p>
+                                        </div>
+                                    </Tippy>
+                                })}
+                            </div>
+                            <p className={`font-medium w-[35%] ${error ? 'text-red-600' : 'text-blue-600'} bottom`}> {message} </p>
+                        </div>
                     </div>
                 );
             case 2:
-                return (
-                    <div className="relative mt-20 mx-4">
-                        <label htmlFor="useradd" className="absolute px-1 font-semibold bg-[var(--page-bg)] left-3 z-30 text-blue-600 text-xs">Add User</label>
-                        <input
-                            type="text"
-                            id="useradd"
-                            value={userAdd}
-                            className="outline-0 absolute top-2 z-20 rounded-sm py-1.5 pl-3 w-[340px] bg-[var(--page-bg)]
-                             text-[var(--login-input-text-color)] border-2 border-gray-300 duration-300 hover:border-cyan-600 focus:border-blue-700"
-                            placeholder="Enter Username"
-                            onChange={(e) => setUserAdd(e.target.value)} />
-                        <button
-                            type="submit"
-                            onClick={handleAdd}
-                            disabled={!userAdd}
-                            className={`absolute right-0 w-16 h-10 mt-2 ${userAdd === '' ? 'bg-gray-500 hover:bg-gray-600 hover:cursor-not-allowed' : '  bg-blue-500 hover:bg-blue-600'} duration-300 text-white font-semibold rounded-md  `}>
-                            Add
-                        </button>
-                    </div>
-                );
-            case 3:
-                return (
-                    <div className={`mt-36 mx-4 flex ${list.length === 0 ? 'justify-end ' : 'justify-between'} `}>
-                        <div className="flex flex-wrap max-w-[65%] h-auto">
-                            {list.map((user, id) => {
-                                return <Tippy key={id} content={user.username} placement="bottom">
-                                    <div className="inline-block w-[60px] mr-[5px] relative">
-                                        <div className="w-full flex justify-center">
-                                            <img className="w-10 h-10 rounded-full object-cover" src={user.image} alt="" />
-                                            <button onClick={() => removeUser(user._id)} className="top-0 left-10 rounded-full bg-red-600 font-bold text-[10px] text-white absolute w-3.5 h-3.5"> X </button>
-                                        </div>
-                                        <p className="font-medium text-center text-[var(--login-input-text-color)]
-                                         text-[14px] truncate max-w-[60px]">{user.username}</p>
-                                    </div>
-                                </Tippy>
-                            })}
-                        </div>
-                        <p className={`font-medium w-[35%] ${error ? 'text-red-600' : 'text-blue-600'} bottom`}> {message} </p>
-                    </div>
-                );
-            case 4:
                 return (
                     <div className="flex flex-col items-center justify-center h-full">
                         <h3 className="text-xl font-bold mb-4">Xác nhận thông tin</h3>
@@ -223,6 +222,13 @@ function GroupModal({ toggleModal, status, editGroup, onCreateGroup, onEditGroup
                             <p className="mb-2">Số thành viên: {list.length}</p>
                             <p>Bạn có chắc chắn muốn tạo nhóm?</p>
                         </div>
+                    </div>
+                );
+            case 3:
+                return (
+                    <div className="flex flex-col items-center justify-center h-full">
+                        <h3 className="text-xl font-bold mb-4">Xác nhận thông tin</h3>
+                        <p>Bước cuối cùng rồi, hãy ấn xác nhận để hoàn tất!</p>
                     </div>
                 );
             default:
@@ -234,7 +240,7 @@ function GroupModal({ toggleModal, status, editGroup, onCreateGroup, onEditGroup
         <div id="backmodal" className="w-screen h-screen bg-[rgba(39,38,38,0.5)] flex justify-center items-center fixed top-0 right-0 z-20 ">
             <div className={`w-[800px] pb-5 bg-[var(--page-bg)] rounded-3xl flex z-20`}>
                 {/* Left side - Carousel */}
-                <div className="w-[400px] p-4">
+                <div className="p-4">
                     <Carousel 
                         baseWidth={350}
                         autoplay={false}
@@ -267,7 +273,7 @@ function GroupModal({ toggleModal, status, editGroup, onCreateGroup, onEditGroup
                                 className={`px-4 py-2 rounded ${currentStep === 0 ? 'bg-gray-300' : 'bg-blue-500 hover:bg-blue-600'} text-white`}>
                                 Quay lại
                             </button>
-                            {currentStep === 4 ? (
+                            {currentStep === 3 ? (
                                 <button
                                     onClick={() => {
                                         setLoading(true);
@@ -278,7 +284,7 @@ function GroupModal({ toggleModal, status, editGroup, onCreateGroup, onEditGroup
                                     }}
                                     disabled={loading}
                                     className="px-4 py-2 rounded bg-green-500 hover:bg-green-600 text-white">
-                                    {loading ? <img src="/loading.png" className="w-6 h-6" alt=""></img> : "Tạo nhóm"}
+                                    {loading ? <img src="/loading.png" className="w-6 h-6" alt=""></img> : "Xác nhận"}
                                 </button>
                             ) : (
                                 <button

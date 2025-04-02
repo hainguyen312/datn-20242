@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
 import Tippy from "@tippyjs/react";
+import ProfileImageTour from "../ProfileImageTour";
 
 const FULLNAME_REGEX = /^[a-zA-Z\s]+$/;
 const EMAIL_REGEX = /^([^\s@]+@[^\s@]+\.[^\s@]+)$/;
@@ -66,29 +67,37 @@ const ChangeInfoForm = () => {
 
   return (
     <div className="h-auto w-auto">
+      <ProfileImageTour 
+        isFirstLogin={auth.isFirstLogin} 
+        onTourComplete={() => {
+          setAuth(prev => ({ ...prev, isFirstLogin: false }));
+        }} 
+      />
       <div className="h-full w-full flex items-center justify-center">
         <div className="h-full w-full border-gray-300 shadow-xl flex flex-col gap-2">
           <div className="mt-2 flex flex-col gap-8">
             {/* Avatar */}
-            <div className="mx-5 relative flex items-center bg-[var(--file-input-container)] p-2 gap-2">
+            <div className="profile-image-section mx-5 relative flex items-center bg-[var(--file-input-container)] p-2 gap-2">
               {/* Uploaded data */}
-              {avatar ? (
-                <img
-                  src={avatar?.preview}
-                  alt="Avatar"
-                  className="rounded-full w-20 h-20 object-cover"
-                />
-              ) : (
-                <img
-                  src={auth.image}
-                  alt="Avatar"
-                  className="rounded-full w-20 h-20 object-cover"
-                />
-              )}
+              <div className="image-preview">
+                {avatar ? (
+                  <img
+                    src={avatar?.preview}
+                    alt="Avatar"
+                    className="rounded-full w-20 h-20 object-cover"
+                  />
+                ) : (
+                  <img
+                    src={auth.image}
+                    alt="Avatar"
+                    className="rounded-full w-20 h-20 object-cover"
+                  />
+                )}
+              </div>
 
               <label
                 htmlFor="inputAvatar"
-                className="cursor-pointer rounded border mr-[40px] px-[12px] py-[6px] 
+                className="upload-image-button cursor-pointer rounded border mr-[40px] px-[12px] py-[6px] 
                 bg-[var(--file-input-btn)]
                 text-black hover:border-gray-500">
                 Upload Avatar
@@ -104,7 +113,6 @@ const ChangeInfoForm = () => {
                   file.preview = URL.createObjectURL(file)
                   setAvatar(file)
                 }}></input>
-
             </div>
             {/* Full Name */}
             <div className="ml-5 mr-5 relative">
@@ -166,7 +174,7 @@ const ChangeInfoForm = () => {
                   setLoading(true);
                   handleSubmit();
                 }}
-                className="w-full h-10 bg-blue-500 text-white font-semibold rounded-md
+                className="save-profile-button w-full h-10 bg-blue-500 text-white font-semibold rounded-md
                  hover:bg-blue-600 duration-300 flex justify-center items-center 
                  disabled:bg-slate-500 disabled:hover:cursor-not-allowed"
               >
