@@ -103,7 +103,7 @@ const handleForget = async (req, res) => {
 
         const token = JWT.sign({ email, username: user.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
 
-        const resetPasswordUrl = `https://ngcuong0812.id.vn/recover?token=${token}`;
+        const resetPasswordUrl = `http://localhost:3000/recover?token=${token}`;
 
         await gmailService.sendRecoverEmail(email, user.username, resetPasswordUrl);
 

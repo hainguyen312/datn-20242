@@ -3,6 +3,7 @@ import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 import ChangeInfoForm from "../../components/settingpanel/ChangeInfoForm";
 import ChangePasswordForm from "../../components/settingpanel/ChangePasswordForm";
 import SystemSettings from "../../components/settingpanel/SystemSettings";
+import ShinyText from "../../components/text/ShinyText";
 
 const Settings = () => {
   const [showChangeInfo, setShowChangeInfo] = useState(true);
@@ -30,7 +31,7 @@ const Settings = () => {
     <div className="h-auto min-w-[350px] bg-[var(--page-bg)]">
       {/* Header */}
       <h1 className="p-3 text-2xl font-bold flex items-center text-blue-500 mb-0">
-        Settings
+        <ShinyText text="Settings" disabled={false} speed={0.5} className="font-bold text-2xl"/>    
       </h1>
       <div className="divider mt-0"></div>
       <div className="flex flex-col gap-4">

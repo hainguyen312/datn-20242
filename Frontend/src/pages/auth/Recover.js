@@ -95,7 +95,11 @@ function Recover() {
                         user && (<><span className="text-[var(--login-text-color)] mt-3">Reset password</span>
                             <div className="border-2 flex justify-between items-center px-5 py-3 rounded-md bg-[var(--autologin-bg)]">
                                 <div className="w-[100px] flex-[0.3] justify-center flex">
-                                    <img src={user.image} className="rounded-full w-12 h-12" alt=""></img>
+                                    <img 
+                                        src={user.image} 
+                                        className="rounded-full w-[48px] h-[48px] max-w-none" 
+                                        alt=""
+                                    />
                                 </div>
                                 <div className="flex-[1] text-left px-5">
                                     <p className="font-bold text-base text-[var(--login-text-color)] truncate max-w-[200px]">{user.username}</p>

@@ -1,7 +1,7 @@
 import React from "react";
 import OnlineStatus from "../../components/profilepanel/OnlineStatus";
 import useAuth from "../../hooks/useAuth";
-
+import ShinyText from "../../components/text/ShinyText";
 const Profile = () => {
   const { auth } = useAuth();
   console.log(auth.image)
@@ -9,7 +9,7 @@ const Profile = () => {
     <div className="h-auto min-w-[350px] bg-[var(--page-bg)]">
       {/* Header */}
       <h1 className="p-3 text-2xl font-bold flex items-center text-blue-500 mb-0">
-        Profile
+        <ShinyText text="Profile" disabled={false} speed={0.5} className="font-bold text-2xl"/>
       </h1>
       <div className="divider mt-0"></div>
       {/* Infos section */}

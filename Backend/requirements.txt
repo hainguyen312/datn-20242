@@ -8,3 +8,5 @@ mtcnn==1.0.0
 requests==2.32.3
 tf_keras==2.18.0
 retina-face==0.0.17
+scipy==1.12.0
+cloudinary==1.37.3

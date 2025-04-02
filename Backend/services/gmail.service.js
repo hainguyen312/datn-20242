@@ -12,7 +12,7 @@ const sendRecoverEmail = async (email, username, recoverUrl) => {
 
     const htmlContent = `
         <div style="background-color: #f4f4f4; padding: 20px;">
-            <img src="https://ngcuong0812.id.vn/appicon.png" alt="ChatK Logo" style="display: block; margin: 0 auto; width: 150px; height: auto;">
+            <img src="https://drive.google.com/file/d/1zFDSANPiK0Vv09tzHGg80rBio-jS9oI-/view?usp=sharing" alt="ChatH Logo" style="display: block; margin: 0 auto; width: 150px; height: auto;">
             <div style="background-color: #ffffff; padding: 20px; border-radius: 10px; margin-top: 20px;">
                 <p style="font-size: 18px;">Hello ${username},</p>
                 <p>We have received a request to recover your account.</p>
@@ -20,15 +20,15 @@ const sendRecoverEmail = async (email, username, recoverUrl) => {
                 <a href="${recoverUrl}" style="background-color: #007bff; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 5px; display: inline-block; margin-top: 10px;">Reset Password</a>
                 <p>Please note that the recovery link will expire in one hour.</p>
                 <p>If you did not request this, please ignore this email.</p>
-                <p>Thank you,<br>ChatK</p>
+                <p>Thank you,<br>ChatH</p>
             </div>
         </div>
     `;
 
     const mailOptions = {
-        from: 'chatk.enterprise@gmail.com',
+        from: 'haindchv@gmail.com',
         to: email,
-        subject: 'ChatK | Recover your account',
+        subject: 'ChatH | Recover your account',
         html: htmlContent
     };
 

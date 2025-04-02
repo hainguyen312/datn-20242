@@ -1,6 +1,6 @@
 import React from "react";
 import { ChannelList, useChatContext } from "stream-chat-react";
-
+import ShinyText from "../text/ShinyText";
 import CustomChannel from "./Channel";
 import CustomSearchResult from "./SearchResult";
 
@@ -13,7 +13,9 @@ const ChatPanel = () => {
 
   return (
     <div className='w-[349px] bg-[var(--page-bg)]'>
-      <h1 className="font-bold text-blue-500 text-2xl p-3">Chats</h1>
+      <h1 className="font-bold text-2xl p-3">
+        <ShinyText text="Chats" disabled={false} speed={0.5} className="font-bold text-2xl"/>
+      </h1>
       <ChannelList Preview={CustomChannel} sort={sort} filters={filters} options={options}
         showChannelSearch additionalChannelSearchProps={{
           searchForChannels: false,

@@ -5,7 +5,7 @@ const setupFirebase = () => {
         const serviceAccount = require('./serviceAccountKey.json');
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
-            storageBucket: 'gs://chat-webapp-81c85.appspot.com'
+            storageBucket: 'gs://chath-c213e.firebasestorage.app'
         });
         console.log("Firebase established successfully");
     } catch (error) {

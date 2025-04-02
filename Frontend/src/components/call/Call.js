@@ -40,7 +40,7 @@ export default function Call() {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 streamRef.current = stream;
 
-                const apiKey = '3w47ynjjggn4';
+                const apiKey = '472pnwyznejm';
                 const token = streamToken;
                 const userId = username;
 
@@ -97,6 +97,7 @@ export default function Call() {
         const formData = new FormData();
         formData.append('videoImage', file);
         formData.append('avatarUrl', auth.image || '');
+        console.log(formData)
     
         try {
             const response = await axios.post('https://smoothly-tough-sturgeon.ngrok-free.app/api/face/analyze', formData, {

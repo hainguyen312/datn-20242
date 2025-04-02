@@ -1,7 +1,7 @@
 import CreateBox from '../../components/grouppanel/CreateBox';
 import GroupList from '../../components/grouppanel/GroupList';
 import useUserData from '../../hooks/useUserData';
-
+import ShinyText from '../../components/text/ShinyText';
 const Groups = () => {
 
   const { listGroup, setListGroup } = useUserData();
@@ -16,7 +16,9 @@ const Groups = () => {
     <div className="h-auto min-w-[350px] bg-[var(--page-bg)]" >
       {/* Header */}
       <div>
-        <h1 className='font-bold text-blue-500 text-2xl p-3'> Groups </h1>
+        <h1 className='font-bold text-blue-500 text-2xl p-3'> 
+           <ShinyText text="Groups" disabled={false} speed={0.5} className="font-bold text-2xl"/>
+        </h1>
       </div>
 
       {/* Create Button */}
