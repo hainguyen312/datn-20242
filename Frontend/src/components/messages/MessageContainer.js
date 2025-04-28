@@ -1,5 +1,5 @@
 import {
-  Channel, MessageInput, MessageList, Thread, Window, useChatContext,
+  Channel, MessageInput, MessageList, Thread, Window, useChatContext,useChannelStateContext
 } from 'stream-chat-react';
 import { IoIosVideocam, IoIosCall, IoIosMenu } from 'react-icons/io';
 import Tippy from "@tippyjs/react";
@@ -12,6 +12,9 @@ import data from '@emoji-mart/data';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import useSocket from '../../hooks/useSocket';
 import useAuth from '../../hooks/useAuth';
+import CustomMessage from './CustomMessage';
+import styles from './MessageList.module.css';
+import { useEffect, useState } from 'react';
 
 init({ data });
 
@@ -161,14 +164,52 @@ const ChannelHeader = ({ channelData, members, memberIds, handleStartCall }) => 
 
 const MessageContainer = ({userId}) => {
   const { channel } = useChatContext();
+  const { messages } = useChannelStateContext();
   const { auth } = useAuth();
   const { socket } = useSocket();
   const members = channel?.state?.members;
   const memberIds = Object.keys(members || []);
   const axiosPrivate = useAxiosPrivate();
-  const groupOwner = channel?.data?.created_by?.id; // ID của owner
+  const groupOwner = channel?.data?.created_by?.id;
+  const [scamAnalysis, setScamAnalysis] = useState({});
 
-  console.log(memberIds)
+  useEffect(() => {
+    if (!channel) return;
+
+    const handleNewMessage = async (event) => {
+      try {
+        console.log('Analyzing message:', event.message.text);
+        console.log('Message user:', event.user.name);
+
+        if (!event.message.text || event.user.id === auth.username) {
+          console.log('Skipping analysis - no text or own message');
+          return;
+        }
+
+        console.log('Calling scam detection API...');
+        const response = await axiosPrivate.post('/api/scam/analyze', {
+          message: event.message.text,
+          senderId: event.user.id
+        });
+
+        console.log('API response:', response.data);
+        if (response.data.success) {
+          setScamAnalysis(prev => ({
+            ...prev,
+            [event.message.id]: response.data.data
+          }));
+        }
+      } catch (error) {
+        console.error('Error analyzing message:', error);
+      }
+    };
+
+    channel.on("message.new", handleNewMessage);
+
+    return () => {
+      channel.off("message.new", handleNewMessage);
+    };
+  }, [channel, axiosPrivate]);
 
   const handleStartCall = async (callType) => {
     const callId = await axiosPrivate.get(`/api/call?cid=${channel?.data?.cid}`);
@@ -189,12 +230,29 @@ const MessageContainer = ({userId}) => {
     }
   };
 
+  const getGroupStyles = (message, previousMessage, nextMessage) => {
+    if (!previousMessage) return styles.single;
+    if (!nextMessage) return styles.bottom;
+    if (message.user?.id !== previousMessage.user?.id) return styles.top;
+    if (message.user?.id !== nextMessage.user?.id) return styles.bottom;
+    return styles.middle;
+  };
   return (
-    <Channel EmojiPicker={EmojiPicker} emojiSearchIndex={SearchIndex} >
+    <Channel 
+      EmojiPicker={EmojiPicker} 
+      emojiSearchIndex={SearchIndex}
+    >
       <Window>
         <ChannelHeader channelData={channel?.data} members={members} memberIds={memberIds} handleStartCall={handleStartCall} />
-        <MessageList closeReactionSelectorOnClick
-          disableDateSeparator onlySenderCanEdit showUnreadNotificationAlways={false} />
+        <MessageList 
+          closeReactionSelectorOnClick
+          disableDateSeparator 
+          onlySenderCanEdit 
+          showUnreadNotificationAlways={false}
+          groupStyles={getGroupStyles}
+          messageLimit={10}
+          Message={(props) => <CustomMessage {...props} scamAnalysis={scamAnalysis} />}
+        />
         <MessageInput focus audioRecordingEnabled />
       </Window>
       <Thread />

@@ -1,0 +1,28 @@
+.single {
+    margin-bottom: 8px;
+}
+
+.top {
+    margin-bottom: 2px;
+}
+
+.middle {
+    margin-bottom: 2px;
+}
+
+.bottom {
+    margin-bottom: 8px;
+}
+
+.message {
+    position: relative;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: var(--str-chat__message-bubble-background-color);
+}
+
+.messageMe {
+    background-color: var(--str-chat__own-message-bubble-background-color);
+    margin-left: auto;
+    margin-right: 0;
+} 

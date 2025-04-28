@@ -7,7 +7,15 @@ const NotFound = () => {
     <div className="bg-white w-screen h-screen flex flex-col justify-center items-center">
       {/* 404 */}
       <div className="">
-          <img src={`${process.env.PUBLIC_URL}/404error.png`} className="w-[460px] h-auto:" alt="app icon"></img>
+        <FuzzyText 
+          baseIntensity={0.2} 
+          fontSize="300px"
+          hoverIntensity={0.5} 
+          color="#3b82f6"
+          enableHover={true}
+        >
+          404
+        </FuzzyText>
       </div>
 
       {/* Text */}
