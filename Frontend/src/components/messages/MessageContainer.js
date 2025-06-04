@@ -1,7 +1,7 @@
 import {
   Channel, MessageInput, MessageList, Thread, Window, useChatContext,useChannelStateContext
 } from 'stream-chat-react';
-import { IoIosVideocam, IoIosCall, IoIosMenu } from 'react-icons/io';
+import {IoIosRecording ,IoIosVideocam, IoIosCall, IoIosMenu } from 'react-icons/io';
 import Tippy from "@tippyjs/react";
 import { MdDeleteOutline } from "react-icons/md";
 import { CgLogOut } from "react-icons/cg";
@@ -167,13 +167,13 @@ const ChannelHeader = ({ channelData, members, memberIds, handleStartCall }) => 
           <IoIosVideocam size={30} color='#007bff' />
         </button>
         <button 
-          className="call-button" 
+          className="showRecord-button" 
           onClick={() => {
             setShowRecordings(true);
             fetchRecordings();
           }}
         >
-          <IoIosVideocam size={30} color='#28a745' />
+          <IoIosRecording size={30} color='#007bff' />
         </button>
         <Tippy
           content={chatOptions()}

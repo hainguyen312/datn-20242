@@ -238,61 +238,71 @@ function GroupModal({ toggleModal, status, editGroup, onCreateGroup, onEditGroup
 
     return (
         <div id="backmodal" className="w-screen h-screen bg-[rgba(39,38,38,0.5)] flex justify-center items-center fixed top-0 right-0 z-20 ">
-            <div className={`w-[800px] pb-5 bg-[var(--page-bg)] rounded-3xl flex z-20`}>
-                {/* Left side - Carousel */}
-                <div className="p-4">
-                    <Carousel 
-                        baseWidth={350}
-                        autoplay={false}
-                        currentIndex={currentStep}
-                        onIndexChange={setCurrentStep}
-                    />
+            <div className={`w-[800px] pb-5 bg-[var(--page-bg)] rounded-3xl flex-column z-20`}>
+                <div className="h-[60px] bg-blue-500 flex items-center justify-between rounded-t-3xl" style={{padding:'0 10px 0 50px'}}>
+                    <h3 className="text-white font-bold text-[18px] pl-4">{status} Group</h3>
+                    <button
+                        className="text-white font-bold text-base pr-4"
+                        onClick={() => toggleModal(false)}>
+                        X
+                    </button>
                 </div>
-
-                {/* Right side - Form */}
-                <div className="flex-1">
-                    {/* Header */}
-                    <div className="h-[60px] bg-blue-500 flex items-center justify-between rounded-t-3xl">
-                        <h3 className="text-white font-bold text-[18px] pl-4">{status} Group</h3>
-                        <button
-                            className="text-white font-bold text-base pr-4"
-                            onClick={() => toggleModal(false)}>
-                            X
-                        </button>
+                <div className={`w-[800px] pb-5 bg-[var(--page-bg)] rounded-3xl flex z-20`} >
+                    {/* Left side - Carousel */}
+                    <div className="p-4">
+                        <Carousel 
+                            baseWidth={350}
+                            autoplay={false}
+                            currentIndex={currentStep}
+                            onIndexChange={setCurrentStep}
+                        />
                     </div>
 
-                    {/* Step Content */}
-                    <div className="h-[calc(100%-60px)] flex flex-col">
-                        {renderStepContent()}
-                        
-                        {/* Navigation Buttons */}
-                        <div className="mt-auto flex justify-between px-4 py-4">
+                    {/* Right side - Form */}
+                    <div className="flex-1">
+                        {/* Header */}
+                        {/* <div className="h-[60px] bg-blue-500 flex items-center justify-between rounded-t-3xl">
+                            <h3 className="text-white font-bold text-[18px] pl-4">{status} Group</h3>
                             <button
-                                onClick={handlePrevStep}
-                                disabled={currentStep === 0}
-                                className={`px-4 py-2 rounded ${currentStep === 0 ? 'bg-gray-300' : 'bg-blue-500 hover:bg-blue-600'} text-white`}>
-                                Quay lại
+                                className="text-white font-bold text-base pr-4"
+                                onClick={() => toggleModal(false)}>
+                                X
                             </button>
-                            {currentStep === 3 ? (
+                        </div> */}
+
+                        {/* Step Content */}
+                        <div className="h-[calc(100%-60px)] flex flex-col">
+                            {renderStepContent()}
+                            
+                            {/* Navigation Buttons */}
+                            <div className="mt-auto flex justify-between px-4 py-4">
                                 <button
-                                    onClick={() => {
-                                        setLoading(true);
-                                        if (status === 'Edit')
-                                            handleEditGroup();
-                                        else
-                                            handleCreateGroup()
-                                    }}
-                                    disabled={loading}
-                                    className="px-4 py-2 rounded bg-green-500 hover:bg-green-600 text-white">
-                                    {loading ? <img src="/loading.png" className="w-6 h-6" alt=""></img> : "Xác nhận"}
+                                    onClick={handlePrevStep}
+                                    disabled={currentStep === 0}
+                                    className={`px-4 py-2 rounded ${currentStep === 0 ? 'bg-gray-300' : 'bg-blue-500 hover:bg-blue-600'} text-white`}>
+                                    Quay lại
                                 </button>
-                            ) : (
-                                <button
-                                    onClick={handleNextStep}
-                                    className="px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 text-white">
-                                    Tiếp tục
-                                </button>
-                            )}
+                                {currentStep === 3 ? (
+                                    <button
+                                        onClick={() => {
+                                            setLoading(true);
+                                            if (status === 'Edit')
+                                                handleEditGroup();
+                                            else
+                                                handleCreateGroup()
+                                        }}
+                                        disabled={loading}
+                                        className="px-4 py-2 rounded bg-green-500 hover:bg-green-600 text-white">
+                                        {loading ? <img src="/loading.png" className="w-6 h-6" alt=""></img> : "Xác nhận"}
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={handleNextStep}
+                                        className="px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 text-white">
+                                        Tiếp tục
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
