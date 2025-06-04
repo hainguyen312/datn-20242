@@ -51,7 +51,10 @@ const NavBar = () => {
   }
 
   return (
-    <div className="border flex flex-col gap-1 items-center bg-[var(--navbar-bg)] border-none">
+    <div className="border flex flex-col gap-1 items-center bg-[var(--navbar-bg)] border-none" style={{
+      minWidth:'100px',
+      border:'1px solid #0000001A'
+    }}>
       <h1 className="text-2xl text-black font-medium">
         <img src={`${process.env.PUBLIC_URL}/logo500.png`} className="w-20 h-20" alt="app icon"></img>
       </h1>

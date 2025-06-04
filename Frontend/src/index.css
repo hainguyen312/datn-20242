@@ -154,7 +154,8 @@ body {
 }
 
 .str-chat__channel-list {
-    width: 350px;
+    max-width: 350px;
+    width: 100%;
     background-color: var(--page-bg);
     height: 90vh;
 }

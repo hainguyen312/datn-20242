@@ -8,6 +8,7 @@ import {
     SpeakerLayout,
     CallControls
 } from '@stream-io/video-react-sdk';
+import { StreamChat } from 'stream-chat';
 import { useEffect, useState, useRef } from 'react';
 import useAuth from '../../hooks/useAuth';
 import Loading from '../Loading';
@@ -15,6 +16,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import useSocket from '../../hooks/useSocket';
 import { saveAs } from 'file-saver';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 export default function Call() {
     const [client, setClient] = useState(null);
@@ -33,6 +35,8 @@ export default function Call() {
     const queryParams = new URLSearchParams(location.search);
     const groupOwner = queryParams.get('groupOwner');
     const { socket } = useSocket();
+    const [chatClient, setChatClient] = useState(null);
+    const axiosPrivate = useAxiosPrivate();
     // Khởi tạo video call
     useEffect(() => {
         const startLocalVideo = async () => {
@@ -69,6 +73,13 @@ export default function Call() {
             if (call) call.leave();
         };
     }, [streamToken, username, callId, auth.image]);
+
+    // Khởi tạo Stream Chat client
+    useEffect(() => {
+        const client = StreamChat.getInstance('472pnwyznejm');
+        setChatClient(client);
+        return () => client.disconnectUser();
+    }, []);
 
     // Chụp khung hình từ luồng video
     const captureFrameFromStream = () => {
@@ -192,6 +203,79 @@ export default function Call() {
             setReceivedResults(0);  // Reset sau khi tải file
         }
     }, [receivedResults, participantsCount]);
+
+    // Lắng nghe sự kiện recording
+    useEffect(() => {
+        if (!call) {
+            console.log('Call object is null, cannot set up recording events');
+            return;
+        }
+
+        console.log('Setting up recording event listeners for call:', call.id);
+
+        const handleRecordingStarted = (event) => {
+            console.log('Recording started event received:', event);
+        };
+
+        const handleRecordingStopped = (event) => {
+            console.log('Recording stopped event received:', event);
+        };
+
+        const handleRecordingReady = async (event) => {
+            try {
+                console.log('Recording ready event received:', event);
+                const { call_recording } = event;
+                
+                if (call_recording) {
+                    console.log('Call recording data:', call_recording);
+
+                    // Chỉ cho phép groupOwner gửi recording
+                    if (auth.username === groupOwner) {
+                        // Gửi URL và callId lên server
+                        const response = await axiosPrivate.post('/api/recording/send', {
+                            callId,
+                            recordingUrl: call_recording.url,
+                            channelId: callId
+                        });
+
+                        if (response.status === 200) {
+                            console.log('Recording sent to chat successfully');
+                        } else {
+                            throw new Error('Failed to send recording to chat');
+                        }
+                    } else {
+                        console.log('Not group owner, skipping recording save');
+                    }
+                } else {
+                    console.log('No call_recording data in event');
+                }
+            } catch (error) {
+                console.error('Error handling recording ready:', error);
+                setMessage('Failed to process recording');
+            }
+        };
+
+        const handleRecordingFailed = (error) => {
+            console.error('Recording failed event received:', error);
+            setMessage('Recording failed');
+        };
+
+        // Đăng ký các sự kiện recording
+        call.on('call.recording_started', handleRecordingStarted);
+        call.on('call.recording_stopped', handleRecordingStopped);
+        call.on('call.recording_ready', handleRecordingReady);
+        call.on('call.recording_failed', handleRecordingFailed);
+
+        console.log('Recording event listeners set up successfully');
+
+        return () => {
+            console.log('Cleaning up recording event listeners');
+            call.off('call.recording_started', handleRecordingStarted);
+            call.off('call.recording_stopped', handleRecordingStopped);
+            call.off('call.recording_ready', handleRecordingReady);
+            call.off('call.recording_failed', handleRecordingFailed);
+        };
+    }, [call, callId]);
 
     if (!call || !client) {
         return (

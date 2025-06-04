@@ -16,13 +16,27 @@ class ScamDetectionService {
             const response = await axios.post(`${this.apiUrl}?key=${this.apiKey}`, {
                 contents: [{
                     parts: [{
-                        text: `Bạn là một chuyên gia phát hiện tin nhắn có dấu hiệu lừa đảo, có thể chứa các từ nhạy cảm như "chuyển khoản", "số tài khoản",... hoặc link giả mạo để lấy thông tin người dùng, thông tin cá nhân người dùng như số điện thoại, email, tên người dùng, địa chỉ, số căn cước,... Hãy phân tích tin nhắn sau và trả về kết quả dưới dạng JSON với cấu trúc chính xác như sau:
-{
-    "is_scam": true/false,
-    "confidence": 0.0-1.0,
-    "reason": "lý do phát hiện lừa đảo"
-}
-Chỉ trả về JSON, không thêm bất kỳ text nào khác. Tin nhắn cần phân tích: ${message}`
+                        text: `
+                        Bạn là một chuyên gia an ninh mạng, có nhiệm vụ phát hiện tin nhắn có dấu hiệu lừa đảo.
+                        
+                        Hãy phân tích tin nhắn đầu vào và đánh giá xem liệu nội dung đó có khả năng lừa đảo hay không, dựa trên các yếu tố sau:
+                        1. Yêu cầu cung cấp thông tin nhạy cảm: mã OTP, số tài khoản, CCCD, mật khẩu, địa chỉ, số điện thoại, email, v.v.
+                        2. Chứa các link nghi ngờ giả mạo ngân hàng, thương mại điện tử, hoặc cơ quan chính phủ.
+                        3. Giao tiếp mang tính khẩn cấp hoặc gây hoang mang (ví dụ: dọa kiện, dọa bị khóa tài khoản).
+                        4. Cam kết lợi nhuận cao, mời đầu tư tiền ảo hoặc đa cấp tài chính.
+                        5. Mời gọi tham gia việc nhẹ lương cao, tuyển cộng tác viên với yêu cầu chuyển tiền trước.
+                        6. Giả mạo người quen, người nổi tiếng, hoặc nhân viên cơ quan pháp luật.
+                        7. Nội dung khuyến mãi, trúng thưởng bất ngờ yêu cầu chuyển tiền hoặc truy cập link.
+                        
+                        Hãy trả về kết quả dưới dạng JSON, giữ đúng cấu trúc sau (không thêm văn bản nào ngoài JSON):
+                        {
+                          "is_scam": true | false,
+                          "confidence": 0.0-1.0,
+                          "reason": "Lý do phát hiện lừa đảo (ví dụ: chứa từ khóa 'chuyển khoản', có link nghi ngờ, yêu cầu OTP, cam kết lãi cao,...)"
+                        }
+                        
+                        Tin nhắn cần phân tích: ${message}
+                        `
                     }]
                 }],
                 generationConfig: {

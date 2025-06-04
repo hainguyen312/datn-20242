@@ -1,5 +1,7 @@
 const scamDetectionService = require('../services/scamDetectionService');
 const ScamWarning = require('../models/scam.model');
+const User = require('../models/user.model');
+const mongoose = require('mongoose');
 
 class ScamDetectionController {
     async analyzeMessage(req, res) {
@@ -11,6 +13,23 @@ class ScamDetectionController {
                 return res.status(400).json({
                     success: false,
                     message: 'Missing required fields: message and senderId'
+                });
+            }
+
+            // Kiểm tra tính hợp lệ của senderId
+            if (!mongoose.Types.ObjectId.isValid(senderId)) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid senderId format'
+                });
+            }
+
+            // Kiểm tra sự tồn tại của user
+            const user = await User.findById(senderId);
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'User not found'
                 });
             }
 

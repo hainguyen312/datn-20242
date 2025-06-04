@@ -21,6 +21,8 @@ init({ data });
 const ChannelHeader = ({ channelData, members, memberIds, handleStartCall }) => {
 
   const { client, setActiveChannel } = useChatContext();
+  const [showRecordings, setShowRecordings] = useState(false);
+  const [recordings, setRecordings] = useState([]);
 
   const isGroup = channelData?.isGroup;
 
@@ -121,6 +123,25 @@ const ChannelHeader = ({ channelData, members, memberIds, handleStartCall }) => 
     );
   }
 
+  // Hàm lấy danh sách recordings
+  const fetchRecordings = async () => {
+    try {
+        // Lấy callId từ API
+        const callResponse = await axiosPrivate.get(`/api/call?cid=${channelData?.cid}`);
+        const callId = callResponse.data?.cid;
+
+        if (!callId) {
+            console.error('No call ID found');
+            return;
+        }
+
+        // Lấy danh sách recordings với callId
+        const response = await axiosPrivate.get(`/api/recording/${callId}`);
+        setRecordings(response.data.recordings);
+    } catch (error) {
+        console.error('Error fetching recordings:', error);
+    }
+  };
 
   return (
     <div className='str-chat__header-livestream'>
@@ -145,6 +166,15 @@ const ChannelHeader = ({ channelData, members, memberIds, handleStartCall }) => 
         <button className="call-button" onClick={() => handleStartCall('video')}>
           <IoIosVideocam size={30} color='#007bff' />
         </button>
+        <button 
+          className="call-button" 
+          onClick={() => {
+            setShowRecordings(true);
+            fetchRecordings();
+          }}
+        >
+          <IoIosVideocam size={30} color='#28a745' />
+        </button>
         <Tippy
           content={chatOptions()}
           animation="scale"
@@ -158,6 +188,68 @@ const ChannelHeader = ({ channelData, members, memberIds, handleStartCall }) => 
           </button>
         </Tippy>
       </div>
+
+      {showRecordings && (
+        <div style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: 'white',
+          padding: '20px',
+          borderRadius: '10px',
+          boxShadow: '0 0 10px rgba(0,0,0,0.5)',
+          zIndex: 1000,
+          maxHeight: '80vh',
+          overflowY: 'auto',
+          width: '80%',
+          maxWidth: '600px'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '20px'
+          }}>
+            <h2>Recordings</h2>
+            <button onClick={() => setShowRecordings(false)} style={{
+              padding: '5px 10px',
+              backgroundColor: '#dc3545',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}>
+              Close
+            </button>
+          </div>
+          {recordings.length === 0 ? (
+            <p>No recordings available</p>
+          ) : (
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px'
+            }}>
+              {recordings.map((recording, index) => (
+                <div key={index} style={{
+                  padding: '10px',
+                  border: '1px solid #ddd',
+                  borderRadius: '5px'
+                }}>
+                  <p><strong>Date:</strong> {new Date(recording.createdAt).toLocaleString()}</p>
+                  <a href={recording.url} target="_blank" rel="noopener noreferrer" style={{
+                    color: '#007BFF',
+                    textDecoration: 'none'
+                  }}>
+                    Watch Recording
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -173,6 +265,17 @@ const MessageContainer = ({userId}) => {
   const groupOwner = channel?.data?.created_by?.id;
   const [scamAnalysis, setScamAnalysis] = useState({});
 
+  // Thêm hàm để lấy user ID từ username
+  const getUserById = async (username) => {
+    try {
+      const response = await axiosPrivate.get(`/api/group/findUser?keyword=${username}`);
+      return response.data?._id;
+    } catch (error) {
+      console.error('Error getting user ID:', error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     if (!channel) return;
 
@@ -186,10 +289,17 @@ const MessageContainer = ({userId}) => {
           return;
         }
 
+        // Lấy user ID từ username
+        const userId = await getUserById(event.user.id);
+        if (!userId) {
+          console.error('Could not get user ID for:', event.user.id);
+          return;
+        }
+
         console.log('Calling scam detection API...');
         const response = await axiosPrivate.post('/api/scam/analyze', {
           message: event.message.text,
-          senderId: event.user.id
+          senderId: userId
         });
 
         console.log('API response:', response.data);
@@ -209,7 +319,7 @@ const MessageContainer = ({userId}) => {
     return () => {
       channel.off("message.new", handleNewMessage);
     };
-  }, [channel, axiosPrivate]);
+  }, [channel, axiosPrivate, auth.username]);
 
   const handleStartCall = async (callType) => {
     const callId = await axiosPrivate.get(`/api/call?cid=${channel?.data?.cid}`);
