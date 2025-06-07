@@ -12,7 +12,7 @@ const sendRecoverEmail = async (email, username, recoverUrl) => {
 
     const htmlContent = `
         <div style="background-color: #f4f4f4; padding: 20px;">
-            <img src="https://drive.google.com/file/d/1zFDSANPiK0Vv09tzHGg80rBio-jS9oI-/view?usp=sharing" alt="ChatH Logo" style="display: block; margin: 0 auto; width: 150px; height: auto;">
+            <img src="https://drive.google.com/uc?export=view&id=1CNBxGceXZod7lsPs0DVWw_ev1dxObBYb" alt="ChatH Logo" style="display: block; margin: 0 auto; width: 150px; height: auto;">
             <div style="background-color: #ffffff; padding: 20px; border-radius: 10px; margin-top: 20px;">
                 <p style="font-size: 18px;">Hello ${username},</p>
                 <p>We have received a request to recover your account.</p>

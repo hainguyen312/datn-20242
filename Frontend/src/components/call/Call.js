@@ -279,7 +279,7 @@ export default function Call() {
 
     if (!call || !client) {
         return (
-            <div className="w-full">
+            <div className="w-full h-screen flex items-center justify-center bg-gray-100">
                 <Loading />
             </div>
         );
@@ -317,137 +317,65 @@ export default function Call() {
 console.log(call.state.participants)
 console.log(socket.id)
     return (
-        <>
+        <div className="relative w-full h-screen bg-gray-900">
             <StreamVideo client={client}>
                 <StreamCall call={call}>
                     <MyUILayout callType={callType} />
-                    {/* {auth.username === groupOwner && 
-                    recognitionResult.map((result, index) => (
-                        <div key={index} className="face-result"  style={{
-                            position: 'absolute',
-                            top: `${20 + index * 100}px`,
-                            right: '20px',
-                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                            color: 'white',
-                            padding: '10px',
-                            borderRadius: '5px',
-                            zIndex: 1000,
-                        }}>
-                            <p><strong>User:</strong> {result.recognized? result.userId:'Không rõ'}</p>
-                            <p><strong>Similarity:</strong> {result.similarity.toFixed(2)}</p>
-                            <p><strong>Age:</strong> {result.details.age}</p>
-                            <p><strong>Gender:</strong> {result.details.gender.Woman > result.details.gender.Man ? 'Nữ' : 'Man'}</p>
-                            <p><strong>Race:</strong> {result.details.race}</p>
-                            <p><strong>Emotion:</strong> {result.details.emotion}</p>
-                        </div>
-                    ))} */}
-
+                    
                     {isLoading && (
-                        <div
-                            style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                                color: 'white',
-                                padding: '20px',
-                                borderRadius: '5px',
-                                zIndex: 1000,
-                            }}
-                        >
-                            <p>Recognizing face...</p>
-                        </div>
-                    )}
-                    {isConfirming && (
-                        <div style={{
-                            position: 'fixed',
-                            top: '30%',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            color: '#fff',
-                            padding: '30px',
-                            borderRadius: '10px',
-                            textAlign: 'center',
-                            zIndex: 1000,
-                            width: '300px',
-                            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.4)',
-                        }}>
-                            <h2 style={{
-                                marginBottom: '20px',
-                                fontSize: '1.5em',
-                                fontWeight: 'bold',
-                            }}>
-                                Face Detection Request
-                            </h2>
-                            <p style={{
-                                marginBottom: '20px',
-                                fontSize: '1em',
-                            }}>
-                                {groupOwner} is requesting to detect your face. Do you agree?
-                            </p>
-                            <button 
-                                onClick={handleAcceptRequest} 
-                                style={{
-                                    padding: '10px 20px',
-                                    margin: '10px',
-                                    backgroundColor: '#007bff',
-                                    color: '#fff',
-                                    border: 'none',
-                                    borderRadius: '5px',
-                                    cursor: 'pointer',
-                                    fontSize: '1em',
-                                    transition: 'background-color 0.3s',
-                                }}
-                                onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
-                                onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
-                            >
-                                Accept
-                            </button>
-                            <button 
-                                onClick={handleRejectRequest} 
-                                style={{
-                                    padding: '10px 20px',
-                                    margin: '10px',
-                                    backgroundColor: '#dc3545',
-                                    color: '#fff',
-                                    border: 'none',
-                                    borderRadius: '5px',
-                                    cursor: 'pointer',
-                                    fontSize: '1em',
-                                    transition: 'background-color 0.3s',
-                                }}
-                                onMouseOver={(e) => e.target.style.backgroundColor = '#c82333'}
-                                onMouseOut={(e) => e.target.style.backgroundColor = '#dc3545'}
-                            >
-                                Reject
-                            </button>
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 text-white p-6 rounded-lg shadow-lg z-50">
+                            <div className="flex items-center space-x-3">
+                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                                <p className="text-lg">Đang nhận diện khuôn mặt...</p>
+                            </div>
                         </div>
                     )}
 
+                    {isConfirming && (
+                        <div className="fixed top-1/3 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-80 text-white p-8 rounded-xl shadow-2xl z-50 w-96">
+                            <h2 className="text-2xl font-bold mb-4 text-center">
+                                Yêu cầu nhận diện khuôn mặt
+                            </h2>
+                            <p className="text-center mb-6 text-gray-300">
+                                {groupOwner} đang yêu cầu nhận diện khuôn mặt của bạn. Bạn có đồng ý không?
+                            </p>
+                            <div className="flex justify-center space-x-4">
+                                <button 
+                                    onClick={handleAcceptRequest}
+                                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium"
+                                >
+                                    Đồng ý
+                                </button>
+                                <button 
+                                    onClick={handleRejectRequest}
+                                    className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 font-medium"
+                                >
+                                    Từ chối
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </StreamCall>
             </StreamVideo>
 
-            {auth.username === groupOwner &&
-                <button onClick={requestFaceDetection} style={{
-                    position: 'fixed',
-                    bottom: '20px',
-                    right: '20px',
-                    padding: '10px 20px',
-                    backgroundColor: '#007BFF',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                }}>
-                    Detect Face
+            {auth.username === groupOwner && (
+                <button 
+                    onClick={requestFaceDetection}
+                    className="fixed bottom-6 right-6 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center space-x-2"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                    </svg>
+                    <span>Nhận diện khuôn mặt</span>
                 </button>
-            }
+            )}
 
-            {message && <div>{message}</div>}
-
-        </>
+            {message && (
+                <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+                    {message}
+                </div>
+            )}
+        </div>
     );
 }
 
@@ -466,13 +394,45 @@ export const MyUILayout = ({ callType }) => {
     }
 
     if (!cameraState.hasBrowserPermission || !micState.hasBrowserPermission) {
-        return <div>Please grant camera and microphone permissions to continue.</div>;
+        return (
+            <div className="w-full h-screen flex items-center justify-center bg-gray-900 text-white">
+                <div className="text-center p-8 bg-black bg-opacity-70 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <p className="text-lg">Vui lòng cấp quyền truy cập camera và microphone để tiếp tục.</p>
+                </div>
+            </div>
+        );
     }
 
     return (
         <StreamTheme>
-            <SpeakerLayout participantsBarPosition="bottom" />
-            <CallControls />
+            <div className="relative w-full h-screen">
+                <style>
+                    {`
+                        .str-video__participant-details {
+                            background: rgba(0, 0, 0, 0.7) !important;
+                            padding: 8px 12px !important;
+                            border-radius: 8px !important;
+                            backdrop-filter: blur(4px);
+                        }
+                        .str-video__participant-details__name {
+                            color: white !important;
+                            font-weight: 600 !important;
+                            font-size: 14px !important;
+                        }
+                        .str-video__participant-details__status {
+                            color: #e5e7eb !important;
+                            font-size: 12px !important;
+                        }
+                    `}
+                </style>
+                <SpeakerLayout participantsBarPosition="bottom" />
+                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4">
+                    <CallControls />
+                </div>
+            </div>
         </StreamTheme>
     );
 };
