@@ -17,7 +17,7 @@ export const SocketProvider = ({ children }) => {
                 setSocket(socketInstance);
             } else {
                 // Tạo socket mới nếu chưa tồn tại
-                const newSocket = io("http://localhost:3000", {
+                const newSocket = io('https://datn-20242-1.onrender.com', {
                     query: { username: auth.username },
                 });
                 socketInstance = newSocket; // Gán socket mới cho biến toàn cục
