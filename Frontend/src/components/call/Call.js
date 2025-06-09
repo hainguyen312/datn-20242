@@ -426,6 +426,29 @@ export const MyUILayout = ({ callType }) => {
                             color: #e5e7eb !important;
                             font-size: 12px !important;
                         }
+                        /* Style cho CallControls */
+                        .str-video__call-controls {
+                            background: rgba(0, 0, 0, 0.7) !important;
+                            backdrop-filter: blur(4px);
+                        }
+                        .str-video__call-controls__button {
+                            color: white !important;
+                        }
+                        .str-video__call-controls__button:hover {
+                            background: rgba(255, 255, 255, 0.1) !important;
+                        }
+                        .str-video__call-controls__button--active {
+                            background: rgba(255, 255, 255, 0.2) !important;
+                        }
+                        .str-video__call-controls__button--danger {
+                            background: rgba(239, 68, 68, 0.8) !important;
+                        }
+                        .str-video__call-controls__button--danger:hover {
+                            background: rgba(239, 68, 68, 1) !important;
+                        }
+                        .str-video__generic-menu--item {
+                            color: #FFFFFF !important;
+                        }
                     `}
                 </style>
                 <SpeakerLayout participantsBarPosition="bottom" />
