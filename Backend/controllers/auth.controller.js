@@ -104,7 +104,7 @@ const handleForget = async (req, res) => {
 
         const token = JWT.sign({ email, username: user.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
 
-        const resetPasswordUrl = `http://localhost:3000/recover?token=${token}`;
+        const resetPasswordUrl = `https://datn-20242-1.onrender.com/recover?token=${token}`;
 
         await gmailService.sendRecoverEmail(email, user.username, resetPasswordUrl);
 

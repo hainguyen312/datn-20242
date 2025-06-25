@@ -299,13 +299,21 @@ export default function Call() {
             return;
         }
     
-        const header = "User,Similarity,Age,Gender,Race,Emotion\n";
+        const header = "User;Similarity;Age;Gender;Race;Emotion\n";
         const csvRows = recognitionResult.map(result => {
             const gender = result.details.gender.Woman > result.details.gender.Man ? 'Nữ' : 'Nam';
-            return `${result.recognized? result.userId:'Không rõ'},${result.similarity.toFixed(2)},${result.details.age},${gender},${result.details.race},${result.details.emotion}`;
+            return [
+                result.recognized ? result.userId : 'Không rõ',
+                result.similarity.toFixed(2),
+                result.details.age,
+                gender,
+                result.details.race,
+                result.details.emotion
+            ].map(val => `"${val}"`).join(';');
         });
     
-        const csvContent = header + csvRows.join("\n");
+        const BOM = '\uFEFF';
+        const csvContent = BOM + header + csvRows.join("\n");
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const now = new Date();
         const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD format
