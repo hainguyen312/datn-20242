@@ -34,10 +34,12 @@ export default function Call() {
     const [isConfirming, setIsConfirming] = useState(false);    
     const queryParams = new URLSearchParams(location.search);
     const groupOwner = queryParams.get('groupOwner');
+    const groupName = queryParams.get('groupName');
     const { socket } = useSocket();
     const [chatClient, setChatClient] = useState(null);
     const axiosPrivate = useAxiosPrivate();
     // Khởi tạo video call
+    console.log(groupName)
     useEffect(() => {
         const startLocalVideo = async () => {
             try {
@@ -318,7 +320,8 @@ export default function Call() {
         const now = new Date();
         const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD format
         const timeStr = now.toTimeString().split(' ')[0].replace(/:/g, '-'); // HH-MM-SS format
-        const fileName = `attendance_${callId}_${dateStr}_${timeStr}.csv`;
+        const safeGroupName = groupName.replace(/[^a-zA-Z0-9-_]/g, '_');
+        const fileName = `attendance_${safeGroupName}_${dateStr}_${timeStr}.csv`;
     
         saveAs(blob, fileName);
     };
