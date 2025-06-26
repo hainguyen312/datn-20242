@@ -27,6 +27,7 @@ class ScamDetectionService {
                         5. Mời gọi tham gia việc nhẹ lương cao, tuyển cộng tác viên với yêu cầu chuyển tiền trước.
                         6. Giả mạo người quen, người nổi tiếng, hoặc nhân viên cơ quan pháp luật.
                         7. Nội dung khuyến mãi, trúng thưởng bất ngờ yêu cầu chuyển tiền hoặc truy cập link.
+                        8. Chứa các đường link giả mạo đổi một vài kí tự (ví dụ: I với l,...) so với đường link thật gây nhầm lẫn thị giác đối với người xem, gây nhầm lẫn.
                         
                         Hãy trả về kết quả dưới dạng JSON, giữ đúng cấu trúc sau (không thêm văn bản nào ngoài JSON):
                         {

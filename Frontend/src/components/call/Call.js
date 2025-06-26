@@ -39,7 +39,16 @@ export default function Call() {
     const [chatClient, setChatClient] = useState(null);
     const axiosPrivate = useAxiosPrivate();
     // Khởi tạo video call
-    console.log(groupName)
+    useEffect(() => {
+        if (message) {
+            const timer = setTimeout(() => {
+                setMessage("");
+            }, 5000);
+    
+            return () => clearTimeout(timer);
+        }
+    }, [message]);
+    
     useEffect(() => {
         const startLocalVideo = async () => {
             try {
@@ -325,8 +334,6 @@ export default function Call() {
     
         saveAs(blob, fileName);
     };
-console.log(call.state.participants)
-console.log(socket.id)
     return (
         <div className="relative w-full h-screen bg-gray-900">
             <StreamVideo client={client}>
